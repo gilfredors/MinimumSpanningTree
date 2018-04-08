@@ -8,7 +8,7 @@
 #include "PriorityQueue.h"
 
 using namespace std;
-using namespace mst;
+using namespace minimum_spanning_tree;
 
 Queue_Element::Queue_Element(Node n, unsigned c, Node p): node(n), cost(c), parent(p){};
 

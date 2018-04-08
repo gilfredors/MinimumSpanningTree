@@ -8,10 +8,13 @@
 #include <random>
 #include <fstream>
 #include <iterator>
+#include <algorithm>
+
+#include "PriorityQueue.h"
 #include "Graph.h"
 
 using namespace std;
-using namespace mst;
+using namespace minimum_spanning_tree;
 
 Graph::Graph(const unsigned nV, const double density, const Edge min_edge, const Edge max_edge):
 		data(nV),
@@ -75,16 +78,21 @@ Graph::Graph(const string filename):
 		n_v = *it;
 
 		// Allocate the memory
+		data.resize(n_v);
 		for(unsigned i = 0; i < n_v; ++i)
 		{
 			data[i] = new Edge[n_v];
-			memset(data[i], 0, sizeof(Edge) * n_v);
+			for(unsigned j = 0; j < n_v; ++j)
+			{
+				data[i][j] = static_cast<Edge>(0);
+			}
 		}
 
 		for(++it ; it != data_file.end(); ++it)
 		{
 			// Define edge
-			data[*it][*(++it)] = *(++it);
+			data[*it][*(it+1)] = *(it+2);
+			it += 2;
 		}
 
 		graph_file.close();
@@ -95,8 +103,6 @@ Graph::Graph(const string filename):
 		n_v = 0;
 		n_e = 0;
 	}
-
-
 }
 
 Graph::Graph(const Graph& obj):
@@ -208,7 +214,73 @@ Edge Graph::get_edge(const Node x, const Node y) const
 	}
 }
 
-ostream& mst::operator<<(ostream& os, const Graph& obj)
+// Minimum Spanning Tree: Prim's algorithm
+vector<Edge> Graph::min_span_tree(const Node a) const
+{
+	vector<Edge> mst;
+
+	PriorityQueue u(n_v);
+	vector<Node> ngh; // neighbors
+	bool found_vertex = true;
+
+	// Initialize U with all nodes
+	for(Node i = 0; i != n_v; ++i)
+	{
+		u.insert(Queue_Element(i, UINT_MAX, 0));
+	}
+
+	// Get neighbors of a, and sort
+	Node i = a;
+	ngh = neighbors(i);
+	sort(ngh.begin(), ngh.end());
+
+	// Set 0 distance to source vertex.
+	u.chgPrioirity(a, 0);
+
+	//Remove it from U and insert it in MST
+	mst.push_back(u.top().node);
+	u.minPrioirty();
+
+	// While MST is missing a vertex
+	while((mst.size() != n_v) && (true == found_vertex))
+	{
+		found_vertex = false;
+
+		// Pick v in U with shortest edge to any vertex in MST
+		for(auto it = mst.begin(); it != mst.end(); ++it)
+		{
+			ngh = neighbors(*it);
+			sort(ngh.begin(), ngh.end());
+
+			for(auto jt = ngh.begin(); jt != ngh.end(); ++jt)
+			{
+				// Get neighbor that is not already in MST
+				if(find(mst.begin(), mst.end(), *jt) == mst.end())
+				{
+					if(u.get_cost(*jt) >= get_edge(*jt, *it))
+					{
+						u.chgPrioirity(*jt, get_edge(*jt, *it));
+					}
+					found_vertex = true;
+				}
+			}
+		}
+
+		// Remove top from U and insert it in MST
+		mst.push_back(u.top().node);
+		u.minPrioirty();
+	}
+
+	if(n_v != mst.size())
+	{
+		// No MST could be found
+		mst.clear();
+	}
+
+	return mst;
+}
+
+ostream& minimum_spanning_tree::operator<<(ostream& os, const Graph& obj)
 {
 	os << "\t";
 

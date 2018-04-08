@@ -9,7 +9,7 @@
 #include "ShortestPath.h"
 
 using namespace std;
-using namespace mst;
+using namespace minimum_spanning_tree;
 
 ShortestPath::ShortestPath(const Graph& obj): closed_set(PriorityQueue()), parent(vector<Node>(obj.V())), g(obj){};
 

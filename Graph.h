@@ -14,7 +14,7 @@
 
 using namespace std;
 
-namespace mst
+namespace minimum_spanning_tree
 {
 	typedef unsigned Node;
 	typedef unsigned Edge;
@@ -23,6 +23,7 @@ namespace mst
 	const Edge min_range = 1;
 	const Edge max_range = 10;
 	const Edge no_edge = 0;
+	const Node no_node = UINT_MAX;
 
 	class Graph
 	{
@@ -55,7 +56,11 @@ namespace mst
 		// Lists all nodes y such that there is an edge from x to y.
 		vector<Node> neighbors(const Node x) const;
 
+		// Get value of edge
 		Edge get_edge(const Node x, const Node y) const;
+
+		// Minimum Spanning Tree: Prim's algorithm
+		vector<Edge> min_span_tree(const Node a = 0) const;
 
 		friend ostream& operator<<(ostream& os, const Graph& obj);
 

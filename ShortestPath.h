@@ -12,7 +12,7 @@
 #include "Graph.h"
 #include "PriorityQueue.h"
 
-namespace mst
+namespace minimum_spanning_tree
 {
 	class ShortestPath
 	{

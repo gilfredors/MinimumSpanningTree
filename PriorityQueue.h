@@ -13,7 +13,7 @@
 
 using namespace std;
 
-namespace mst
+namespace minimum_spanning_tree
 {
 	struct Queue_Element
 	{
