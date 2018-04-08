@@ -1,0 +1,2 @@
+# MinimumSpanningTree
+MST
