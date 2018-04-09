@@ -62,6 +62,9 @@ namespace minimum_spanning_tree
 		// Minimum Spanning Tree: Prim's algorithm
 		vector<Edge> min_span_tree(const Node a = 0) const;
 
+		// Cost of MST
+		Edge cost_min_span_tree(const Node a = 0) const;
+
 		friend ostream& operator<<(ostream& os, const Graph& obj);
 
 	private:

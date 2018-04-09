@@ -9,6 +9,7 @@
 #include <fstream>
 #include <iterator>
 #include <algorithm>
+#include <climits>
 
 #include "PriorityQueue.h"
 #include "Graph.h"
@@ -217,7 +218,8 @@ Edge Graph::get_edge(const Node x, const Node y) const
 // Minimum Spanning Tree: Prim's algorithm
 vector<Edge> Graph::min_span_tree(const Node a) const
 {
-	vector<Edge> mst;
+	vector<Edge> mst; // MST represented by edges
+	vector<Node> mst_node; // MST represented by nodes
 
 	PriorityQueue u(n_v);
 	vector<Node> ngh; // neighbors
@@ -238,16 +240,16 @@ vector<Edge> Graph::min_span_tree(const Node a) const
 	u.chgPrioirity(a, 0);
 
 	//Remove it from U and insert it in MST
-	mst.push_back(u.top().node);
+	mst_node.push_back(u.top().node);
 	u.minPrioirty();
 
 	// While MST is missing a vertex
-	while((mst.size() != n_v) && (true == found_vertex))
+	while((mst_node.size() != n_v) && (true == found_vertex))
 	{
 		found_vertex = false;
 
 		// Pick v in U with shortest edge to any vertex in MST
-		for(auto it = mst.begin(); it != mst.end(); ++it)
+		for(auto it = mst_node.begin(); it != mst_node.end(); ++it)
 		{
 			ngh = neighbors(*it);
 			sort(ngh.begin(), ngh.end());
@@ -255,7 +257,7 @@ vector<Edge> Graph::min_span_tree(const Node a) const
 			for(auto jt = ngh.begin(); jt != ngh.end(); ++jt)
 			{
 				// Get neighbor that is not already in MST
-				if(find(mst.begin(), mst.end(), *jt) == mst.end())
+				if(find(mst_node.begin(), mst_node.end(), *jt) == mst_node.end())
 				{
 					if(u.get_cost(*jt) >= get_edge(*jt, *it))
 					{
@@ -267,17 +269,31 @@ vector<Edge> Graph::min_span_tree(const Node a) const
 		}
 
 		// Remove top from U and insert it in MST
-		mst.push_back(u.top().node);
+		mst_node.push_back(u.top().node);
+		mst.push_back(u.top().cost);
 		u.minPrioirty();
 	}
 
-	if(n_v != mst.size())
+	if(n_v != mst_node.size())
 	{
 		// No MST could be found
+		mst_node.clear();
 		mst.clear();
 	}
 
 	return mst;
+}
+
+Edge Graph::cost_min_span_tree(const Node a) const
+{
+	vector<Edge> mst = min_span_tree(a);
+	Edge sum = 0;
+	for(auto i : mst)
+	{
+		sum += i;
+	}
+
+	return sum;
 }
 
 ostream& minimum_spanning_tree::operator<<(ostream& os, const Graph& obj)
