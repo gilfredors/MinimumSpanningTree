@@ -9,7 +9,6 @@
 #include <fstream>
 #include <iterator>
 #include <algorithm>
-#include <climits>
 
 #include "PriorityQueue.h"
 #include "Graph.h"

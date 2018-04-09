@@ -11,6 +11,7 @@
 #include <iostream>
 #include <vector>
 #include <random>
+#include <limits>
 
 using namespace std;
 
@@ -75,6 +76,8 @@ namespace minimum_spanning_tree
 		uniform_real_distribution<> edge_existence;
 		uniform_int_distribution<Edge> edge_prob;
 	};
+
+    ostream& operator<<(ostream& os, const Graph& obj);
 
 }
 
