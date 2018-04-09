@@ -24,7 +24,7 @@ namespace minimum_spanning_tree
 	const Edge min_range = 1;
 	const Edge max_range = 10;
 	const Edge no_edge = 0;
-	const Node no_node = UINT_MAX;
+	const Node no_node = numeric_limits<unsigned>::max();
 
 	class Graph
 	{

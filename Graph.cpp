@@ -227,7 +227,7 @@ vector<Edge> Graph::min_span_tree(const Node a) const
 	// Initialize U with all nodes
 	for(Node i = 0; i != n_v; ++i)
 	{
-		u.insert(Queue_Element(i, UINT_MAX, 0));
+		u.insert(Queue_Element(i, numeric_limits<unsigned>::max(), 0));
 	}
 
 	// Get neighbors of a, and sort
