@@ -108,16 +108,6 @@ vector<Node> ShortestPath::compute_dijkstra(const Node u, const Node w, unsigned
 
 	if(true == w_found)
 	{
-		// Find w in closed set
-		unsigned idx_w;
-		for(unsigned i = 0; i < closed_set.size(); ++i)
-		{
-			if (w == closed_set.element_idx(i).node)
-			{
-				idx_w = i;
-			}
-		}
-
 		// Iterate from parent to parent until u...
 		sequence.push_back(w);
 
