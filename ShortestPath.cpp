@@ -25,10 +25,10 @@ vector<Node> ShortestPath::compute_dijkstra(const Node u, const Node w, unsigned
 	// Initialize the set of shortest path, origin: Node u¬
 	closed_set.insert(Queue_Element(u, 0));
 
-	// Initialize parent list to UINT_MAX
+	// Initialize parent list to numeric_limits<unsigned>::max();
 	for(unsigned i = 0; i < parent.size(); ++i)
 	{
-		parent[i] = static_cast<Node>(UINT_MAX);
+		parent[i] = static_cast<Node>(numeric_limits<unsigned>::max());
 	}
 	// Excluding source
 	parent[u] = 0;
